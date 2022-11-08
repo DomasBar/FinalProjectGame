@@ -1,0 +1,4 @@
+1) Paspaust ant folderio location ir parasyt "cmd"
+2) irašiau bet jei nėra, "pip install pyinstaller"
+3) pyinstaller main.py --onefile
+4) "dist" folderi bus launcheris
