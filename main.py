@@ -6,6 +6,9 @@ from raycasting import *
 from object_renderer import *
 
 
+# Token
+# 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
+
 class Game:
     def __init__(self):
         pg.init()
