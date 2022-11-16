@@ -6,7 +6,7 @@ from raycasting import *
 from object_renderer import *
 
 
-# Token
+# Tokenn
 # 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
 
 class Game:
@@ -23,10 +23,20 @@ class Game:
         self.player = Player(self)
         self.object_renderer = ObjectRenderer(self)
         self.raycasting = RayCasting(self)
+<<<<<<< HEAD
+        self.static_sprite = SpriteObject(self)
+        self.animated_sprite = AnimatedSprite(self)
+=======
+>>>>>>> parent of 503880c (Pradėti kurti static sprite)
 
     def update(self):
         self.player.update()
         self.raycasting.update()
+<<<<<<< HEAD
+        self.static_sprite.update()
+        self.animated_sprite.update()
+=======
+>>>>>>> parent of 503880c (Pradėti kurti static sprite)
         pg.display.flip()
         self.delta_time = self.clock.tick(FPS)
         pg.display.set_caption(f'{self.clock.get_fps() :.1f}')
