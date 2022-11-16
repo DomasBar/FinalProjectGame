@@ -6,7 +6,7 @@ from raycasting import *
 from object_renderer import *
 
 
-# Tokenn
+# Token
 # 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
 
 class Game:
