@@ -7,7 +7,7 @@ from object_renderer import *
 from sprite_object import *
 
 
-# Token
+# Tokenn
 # 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
 
 class Game:

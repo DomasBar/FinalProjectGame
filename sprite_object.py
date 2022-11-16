@@ -23,7 +23,7 @@ class SpriteObject:
         pos = self.screen_x - self.sprite_half_width, HALF_HEIGHT - proj_height // 2
 
         self.game.raycasting.objects_to_render.append((self.norm_dist, image, pos))
-
+    #
     def get_sprite(self):
         dx = self.x - self.player.x
         dy = self.y - self.player.y
