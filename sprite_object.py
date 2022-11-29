@@ -18,7 +18,6 @@ class SpriteObject:
         self.SPRITE_SCALE = scale
         self.SPRITE_HEIGHT_SHIFT = shift
 
-
     def get_sprite_projection(self):
         proj = SCREEN_DIST / self.norm_dist * self.SPRITE_SCALE
         proj_width, proj_height = proj * self.IMAGE_RATIO, proj
@@ -30,7 +29,7 @@ class SpriteObject:
         pos = self.screen_x - self.sprite_half_width, HALF_HEIGHT - proj_height // 2 + heigh_shift
 
         self.game.raycasting.objects_to_render.append((self.norm_dist, image, pos))
-    #
+
     def get_sprite(self):
         dx = self.x - self.player.x
         dy = self.y - self.player.y
