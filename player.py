@@ -2,12 +2,40 @@ from settings import *
 import pygame as pg
 import math
 
+
 class Player:
     def __init__(self, game):
         self.game = game
         self.x, self.y = PLAYER_POS
         self.angle = PLAYER_ANGLE
         self.shot = False
+        self.health = PLAYER_MAX_HEALTH
+        self.rel = 0
+        self.health_recovery_delay = 700
+        self.time_prev = pg.time.get_ticks()
+
+    def recover_health(self):
+        if self.check_health_recovery_delay() and self.health < PLAYER_MAX_HEALTH:
+            self.health += 1
+
+    def check_health_recovery_delay(self):
+        time_now = pg.time.get_ticks()
+        if time_now - self.time_prev > self.health_recovery_delay:
+            self.time_prev = time_now
+            return True
+
+    def check_game_over(self):
+        if self.health < 1:
+            self.game.object_renderer.game_over()
+            pg.display.flip()
+            pg.time.delay(1500)
+            self.game.new_game()
+
+    def get_damage(self, damage):
+        self.health -= damage
+        self.game.object_renderer.player_damage()
+        self.game.sound.player_pain.play()
+        self.check_game_over()
 
     def single_fire_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
@@ -16,7 +44,6 @@ class Player:
                 self.shot = True
                 self.game.weapon.reloading = True
 
-    # MOVEMENT/Judejimas
     def movement(self):
         sin_a = math.sin(self.angle)
         cos_a = math.cos(self.angle)
@@ -61,10 +88,10 @@ class Player:
 
     # CHARACTER
     def draw(self):
-        # pg.draw.line(self.game.screen, "yellow", (self.x * 100, self.y * 100),
-        #              (self.x * 100 + WIDTH * math.cos(self.angle),
-        #              self.y * 100 + WIDTH * math.sin(self.angle)), 2)
-        pg.draw.circle(self.game.screen, "green", (self.x * 100, self.y * 100), 15)
+        pg.draw.line(self.game.screen, 'yellow', (self.x * 100, self.y * 100),
+                    (self.x * 100 + WIDTH * math.cos(self.angle),
+                     self.y * 100 + WIDTH * math. sin(self.angle)), 2)
+        pg.draw.circle(self.game.screen, 'green', (self.x * 100, self.y * 100), 15)
 
     def mouse_control(self):
         mx, my = pg.mouse.get_pos()
@@ -77,6 +104,7 @@ class Player:
     def update(self):
         self.movement()
         self.mouse_control()
+        self.recover_health()
 
     @property
     def pos(self):

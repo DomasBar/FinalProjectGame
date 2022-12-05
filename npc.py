@@ -21,6 +21,7 @@ class NPC(AnimatedSprite):
         self.pain = False
         self.ray_cast_value = False
         self.frame_counter = 0
+        self.player_search_trigger = False
 
     def update(self):
         self.check_animation_time()
@@ -37,17 +38,24 @@ class NPC(AnimatedSprite):
             self.y += dy
 
     def movement(self):
-        next_pos = self.game.player.map_pos
+        next_pos = self.game.pathfinding.get_path(self.map_pos, self.game.player.map_pos)
         next_x, next_y = next_pos
-        angle = math.atan2(next_y + 0.5 - self.y, next_x + 0.5 - self.x)
-        dx = math.cos(angle) * self.speed
-        dy = math.sin(angle) * self.speed
-        self.check_wall_collision(dx, dy)
+        if next_pos not in self.game.object_handler.npc_positions:
+            angle = math.atan2(next_y + 0.5 - self.y, next_x + 0.5 - self.x)
+            dx = math.cos(angle) * self.speed
+            dy = math.sin(angle) * self.speed
+            self.check_wall_collision(dx, dy)
+
+    def attack(self):
+        if self.animation_trigger:
+            self.game.sound.npc_attack.play()
+            if random() < self.accuracy:
+                self.game.player.get_damage(self.attack_damage)
 
 
     def animate_death(self):
         if not self.alive:
-            if self.game.global_trigger and self.frame_counter < len(self.death_images) -1:
+            if self.game.global_trigger and self.frame_counter < len(self.death_images) - 1:
                 self.death_images.rotate(-1)
                 self.image = self.death_images[0]
                 self.frame_counter += 1
@@ -80,8 +88,19 @@ class NPC(AnimatedSprite):
                 self.animate_pain()
 
             elif self.ray_cast_value:
+                self.player_search_trigger = True
+
+                if self.dist < self.attack_dist:
+                    self.animate(self.attack_images)
+                    self.attack()
+                else:
+                    self.animate(self.walk_images)
+                    self.movement()
+
+            elif self.player_search_trigger:
                 self.animate(self.walk_images)
                 self.movement()
+
             else:
                 self.animate(self.idle_images)
         else:
@@ -154,6 +173,17 @@ class NPC(AnimatedSprite):
         if 0 < player_dist < wall_dist or not wall_dist:
             return True
         return False
+
+    def draw_ray_cast(self):
+        pg.draw.circle(self.game.screen, 'red', (100 * self.x, 100 * self.y), 15)
+        if self.ray_cast_player_npc():
+            pg.draw.line(self.game.screen, 'orange', (100 * self.game.player.x, 100 * self.game.player.y),
+                         (100 * self.x, 100 * self.y), 2)
+
+class SoldierNPC(NPC):
+    def __init__(self, game, path='resources/sprites/npc/soldier/0.png', pos=(10.5, 5.5),
+                 scale=0.6, shift=0.38, animation_time=180):
+        super().__init__(game, path, pos, scale, shift, animation_time)
 
 
 
