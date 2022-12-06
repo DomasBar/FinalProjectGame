@@ -22,8 +22,8 @@ class ObjectHandler:
         self.gameMap = Map(game)
         self.map_size = self.gameMap.get_size()
 
-        self.hpRestored = False;
-        self.dmgIncreased = False;
+        self.hpRestored = False
+        self.dmgIncreased = False
 
         # Sprites on the Map
         self.add_sprite(SpriteObject(game))

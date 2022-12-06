@@ -1,7 +1,8 @@
+import object_handler
 from settings import *
 import pygame as pg
 import math
-
+from object_handler import *
 
 class Player:
     def __init__(self, game):
@@ -12,6 +13,8 @@ class Player:
         self.rel = 0
         self.health_recovery_delay = 2000
         self.time_prev = pg.time.get_ticks()
+        self.ObjHandler = object_handler
+
 
     def set_spawn(self, x, y):
         self.x = x
@@ -28,7 +31,13 @@ class Player:
                 self.health += 1
 
     def set_game_over(self):
-        self.game.object_renderer.game_over()
+        self.game.object_renderer.status_game_over()
+        pg.display.flip()
+        pg.time.delay(1500)
+        self.game.new_game()
+
+    def set_game_won(self):
+        self.game.object_renderer.status_game_won()
         pg.display.flip()
         pg.time.delay(1500)
         self.game.new_game()
@@ -66,11 +75,6 @@ class Player:
             dy += speed_cos
 
         self.check_wall_collision(dx, dy)
-
-        # if keys[pg.K_LEFT]:
-        #     self.angle -= PLAYER_ROT_SPEED * self.game.delta_time
-        # if keys[pg.K_RIGHT]:
-        #     self.angle += PLAYER_ROT_SPEED * self.game.delta_time
         self.angle %= math.tau
 
     # WALL COLLISION
@@ -105,9 +109,11 @@ class Player:
         self.movement()
         self.mouse_control()
         self.recover_health()
+        # VICTORY AND LOSE CONDITIONS
+        if self.game.object_handler.killed == 50:
+            self.set_game_won()
         if self.health < 1:
             self.set_game_over()
-
 
     @property
     def pos(self):

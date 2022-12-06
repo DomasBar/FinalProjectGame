@@ -24,6 +24,7 @@ class Game:
         pg.time.set_timer(self.global_event, 40)
         self.new_game()
 
+
     def new_game(self):
         self.player = Player(self)
         self.map = Map(self)
