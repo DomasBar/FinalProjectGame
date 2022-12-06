@@ -1,5 +1,5 @@
 from sprite_object import *
-from random import randint, random, choice
+from random import randint, random, choice, uniform
 
 class NPC(AnimatedSprite):
     def __init__(self, game, path='resources/sprites/npc/soldier/0.png', pos=(3, 3),
@@ -13,10 +13,10 @@ class NPC(AnimatedSprite):
 
         self.attack_dist = randint(3, 6)
         self.speed = 0.03
-        self.size = 10
+        self.size = 50
         self.health = 100
-        self.attack_damage = 10
-        self.accuracy = 0.15
+        self.attack_damage = randint(3, 10)
+        self.accuracy = uniform(0.10, 0.20)
         self.alive = True
         self.pain = False
         self.ray_cast_value = False
@@ -27,6 +27,9 @@ class NPC(AnimatedSprite):
         self.check_animation_time()
         self.get_sprite()
         self.run_logic()
+
+    def isAlive(self):
+        return self.alive
 
     def check_wall(self, x, y):
         return (x, y) not in self.game.map.world_map
@@ -128,6 +131,9 @@ class NPC(AnimatedSprite):
         # horizontals
         y_hor, dy = (y_map + 1, 1) if sin_a > 0 else (y_map - 1e-6, -1)
 
+        if sin_a == 0.0:
+            # Fixes crash, when Sin reaches 0, game crashes, this one line fix it
+            sin_a = 0.0000000000001
         depth_hor = (y_hor - oy) / sin_a
         x_hor = ox + depth_hor * cos_a
 

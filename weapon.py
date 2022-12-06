@@ -13,6 +13,9 @@ class Weapon(AnimatedSprite):
         self.frame_counter = 0
         self.damage = 50
 
+    def set_damage(self, damage):
+        self.damage = damage
+
     def animate_shot(self):
         if self.reloading:
             self.game.player.shot = False

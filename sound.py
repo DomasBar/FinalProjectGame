@@ -10,5 +10,8 @@ class Sound:
         self.npc_death = pg.mixer.Sound(self.path + 'npc_death.wav')
         self.npc_attack = pg.mixer.Sound(self.path + 'npc_attack.wav')
         self.player_pain = pg.mixer.Sound(self.path + 'player_pain.wav')
+
+        self.hpHealed = pg.mixer.Sound(self.path + 'hpHealed.wav')
+        self.dmgIncrease = pg.mixer.Sound(self.path + 'dmgIncrease.wav')
         # self.theme = pg.mixer.Sound(self.path + 'theme.wav')
 

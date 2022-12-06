@@ -1,0 +1,17 @@
+Add more weapons
+Add pickup items (Health, Armors, maybe something else)
+Add Mini Bosses
+Add Final Boss
+Make game Multi Layer level (First floor, basement, hell, etc.)(FULL GAME RELEASE)
+
+MAYBE to do list:
+
+Menu
+Full control mouse movement
+Jump
+Special abilities
+UI
+
+99% Not gonna do:
+Options Menu and Difficulty
+

@@ -27,7 +27,11 @@ class PathFinding:
             cur_node = queue.popleft()
             if cur_node == goal:
                 break
-            next_nodes = graph[cur_node]
+            # SUTAISO CRASHA KURIS KARTAIS ATSIRANDA #
+            if cur_node in graph:
+                next_nodes = graph[cur_node]
+            else:
+                break
 
             for next_node in next_nodes:
                 if next_node not in visited and next_node not in self.game.object_handler.npc_positions:

@@ -14,6 +14,8 @@ class Game:
     def __init__(self):
         pg.init()
         pg.mouse.set_visible(False)
+        pg.event.set_grab(True)
+        #self.screen = pg.display.set_mode((0, 0), pg.FULLSCREEN)
         self.screen = pg.display.set_mode(RES)
         self.clock = pg.time.Clock()
         self.delta_time = 1
@@ -23,8 +25,8 @@ class Game:
         self.new_game()
 
     def new_game(self):
-        self.map = Map(self)
         self.player = Player(self)
+        self.map = Map(self)
         self.object_renderer = ObjectRenderer(self)
         self.raycasting = RayCasting(self)
         self.object_handler = ObjectHandler(self)
@@ -33,9 +35,9 @@ class Game:
         self.pathfinding = PathFinding(self)
 
     def update(self):
-        self.player.update()
         self.raycasting.update()
         self.object_handler.update()
+        self.player.update()
         self.weapon.update()
         pg.display.flip()
         self.delta_time = self.clock.tick(FPS)
