@@ -2,13 +2,13 @@ import object_handler
 from settings import *
 import pygame as pg
 import math
-from object_handler import *
 
 class Player:
     def __init__(self, game):
         self.game = game
         self.angle = PLAYER_ANGLE
         self.shot = False
+        self.melee_attack = False
         self.health = PLAYER_MAX_HEALTH
         self.rel = 0
         self.health_recovery_delay = 2000
@@ -47,11 +47,18 @@ class Player:
         self.game.object_renderer.player_damage()
         self.game.sound.player_pain.play()
 
-    def single_fire_event(self, event):
+    def shotgun_fire_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
             if event.button == 1 and not self.shot and not self.game.weapon.reloading:
                 self.game.sound.shotgun.play()
                 self.shot = True
+                self.game.weapon.reloading = True
+
+    def melee_attack_event(self, event):
+        if event.type == pg.MOUSEBUTTONDOWN:
+            if event.button == 3 and not self.melee_attack and not self.game.weapon.reloading:
+                self.game.sound.shotgun.play()
+                self.melee_attack = True
                 self.game.weapon.reloading = True
 
     def movement(self):
